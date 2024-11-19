@@ -32,6 +32,7 @@ class Objetos3D extends JFrame {
         setSize(800, 600);
         setLocationRelativeTo(null);
         setResizable(false);
+        setLayout(new BorderLayout());
     }
 
     private void inicializarEscena() {
@@ -42,7 +43,7 @@ class Objetos3D extends JFrame {
         screen.setPhysicalScreenWidth(0.0254 / 90.0 * screen.getSize().width);
         screen.setPhysicalScreenHeight(0.0254 / 90.0 * screen.getSize().height);
 
-        getContentPane().add(canvas);
+        getContentPane().add(canvas, BorderLayout.CENTER);
 
         SimpleUniverse universe = new SimpleUniverse(canvas);
         BranchGroup scene = createSceneGraph();
@@ -144,7 +145,7 @@ class Objetos3D extends JFrame {
     }
 
     private void setBackgroundImage(BranchGroup root, String imagePath) {
-        TextureLoader loader = new TextureLoader(imagePath, this);
+        TextureLoader loader = new TextureLoader(imagePath, new Container());
         ImageComponent2D image = loader.getImage();
 
         if (image == null) {
@@ -155,7 +156,7 @@ class Objetos3D extends JFrame {
         Background background = new Background();
         background.setImage(image);
         background.setImageScaleMode(Background.SCALE_FIT_ALL);
-        background.setApplicationBounds(new BoundingSphere());
+        background.setApplicationBounds(new BoundingSphere(new Point3d(0.0,0.0,0.0),1000));
         root.addChild(background);
     }
 
