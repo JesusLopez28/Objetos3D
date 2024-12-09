@@ -215,14 +215,10 @@ public class MovingSphere3D extends JFrame implements KeyListener, MouseListener
         rotator.setSchedulingBounds(new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0));
 
         shipTG.addChild(rotator);
-
         sphereTransformGroup.addChild(shipTG);
         root.addChild(sphereTransformGroup);
-
-        addLighting(root);
         return root;
     }
-
 
     private void addBackground(BranchGroup root) {
         TextureLoader loader = new TextureLoader("src/img/galaxy_background.jpg", this);
@@ -230,20 +226,6 @@ public class MovingSphere3D extends JFrame implements KeyListener, MouseListener
         Background background = new Background(image);
         background.setApplicationBounds(new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0));
         root.addChild(background);
-    }
-
-    private void addLighting(BranchGroup root) {
-        // Luz direccional más potente
-        Color3f lightColor = new Color3f(1.0f, 1.0f, 1.0f);
-        Vector3f lightDirection = new Vector3f(-1.0f, -1.0f, -1.0f);
-        DirectionalLight light = new DirectionalLight(lightColor, lightDirection);
-        light.setInfluencingBounds(new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0));
-        root.addChild(light);
-
-        // Luz ambiental más intensa
-        AmbientLight ambientLight = new AmbientLight(new Color3f(0.8f, 0.8f, 0.8f));
-        ambientLight.setInfluencingBounds(new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0));
-        root.addChild(ambientLight);
     }
 
     private void updateGame() {
@@ -545,6 +527,24 @@ public class MovingSphere3D extends JFrame implements KeyListener, MouseListener
             TextureLoader loader = new TextureLoader("src/img/fire.jpg", null);
             Texture texture = loader.getTexture();
             appearance.setTexture(texture);
+
+            // Material para reflejos
+            Material material = new Material(
+                    new Color3f(0.0f, 0.0f, 0.0f),  // ambient
+                    new Color3f(0.0f, 0.0f, 0.0f),  // emissive
+                    new Color3f(0.0f, 0.0f, 0.0f),  // diffuse
+                    new Color3f(0.7f, 0.7f, 0.7f),  // specular
+                    128.0f                          // shininess
+            );
+            material.setLightingEnable(true);
+
+            appearance.setMaterial(material);
+
+            // Punto de luz
+            PointLight light = new PointLight(new Color3f(1.0f, 1.0f, 1.0f), new Point3f(x, y, z), new Point3f(1.0f, 0.0f, 0.0f));
+            light.setInfluencingBounds(new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0));
+            branchGroup.addChild(light);
+
             return appearance;
         }
 
@@ -617,6 +617,24 @@ public class MovingSphere3D extends JFrame implements KeyListener, MouseListener
             TextureLoader loader = new TextureLoader("src/img/coin.jpg", null);
             Texture texture = loader.getTexture();
             appearance.setTexture(texture);
+
+            // Material para reflejos
+            Material material = new Material(
+                    new Color3f(0.0f, 0.0f, 0.0f),  // ambient
+                    new Color3f(0.0f, 0.0f, 0.0f),  // emissive
+                    new Color3f(0.0f, 0.0f, 0.0f),  // diffuse
+                    new Color3f(0.7f, 0.7f, 0.7f),  // specular
+                    128.0f                          // shininess
+            );
+
+            material.setLightingEnable(true);
+            appearance.setMaterial(material);
+
+            // Punto de luz
+            PointLight light = new PointLight(new Color3f(1.0f, 1.0f, 1.0f), new Point3f(x, y, z), new Point3f(1.0f, 0.0f, 0.0f));
+            light.setInfluencingBounds(new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0));
+            branchGroup.addChild(light);
+
             return appearance;
         }
 
@@ -704,6 +722,23 @@ public class MovingSphere3D extends JFrame implements KeyListener, MouseListener
                 );
                 appearance.setColoringAttributes(coloringAttributes);
             }
+
+            // Añadir material para reflejos
+            Material material = new Material(
+                    new Color3f(0.0f, 0.0f, 0.0f),  // ambient
+                    new Color3f(0.0f, 0.0f, 0.0f),  // emissive
+                    new Color3f(0.0f, 0.0f, 0.0f),  // diffuse
+                    new Color3f(0.7f, 0.7f, 0.7f),  // specular
+                    128.0f                          // shininess
+            );
+            material.setLightingEnable(true);
+
+            appearance.setMaterial(material);
+
+            // Punto de luz
+            PointLight light = new PointLight(new Color3f(1.0f, 1.0f, 1.0f), new Point3f(x, y, z), new Point3f(1.0f, 0.0f, 0.0f));
+            light.setInfluencingBounds(new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0));
+            branchGroup.addChild(light);
 
             return appearance;
         }
