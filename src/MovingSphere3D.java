@@ -70,6 +70,11 @@ public class MovingSphere3D extends JFrame implements KeyListener, MouseListener
         startButton.setFont(new Font("Arial", Font.BOLD, 24));
         startButton.addActionListener(_ -> startGame());
 
+        JButton exitButton = new JButton("EXIT");
+        exitButton.setBackground(Color.RED);
+        exitButton.setFont(new Font("Arial", Font.BOLD, 24));
+        exitButton.addActionListener(_ -> System.exit(0));
+
         JTextArea rulesText = new JTextArea(
                 """
                         Instrucciones:
@@ -99,6 +104,9 @@ public class MovingSphere3D extends JFrame implements KeyListener, MouseListener
         gbc.gridy = 2;
         gbc.insets = new Insets(20, 0, 0, 0);
         menuPanel.add(startButton, gbc);
+        gbc.gridy = 3;
+        gbc.insets = new Insets(10, 0, 0, 0);
+        menuPanel.add(exitButton, gbc);
 
         add(menuPanel, "MENU");
     }
@@ -335,7 +343,12 @@ public class MovingSphere3D extends JFrame implements KeyListener, MouseListener
             backgroundMusicClip.close();
         }
 
-        playSound("src/sound/gameover.wav");
+        if (score > highScore) {
+            highScore = score;
+            playSound("src/sound/victory.wav");
+        } else {
+            playSound("src/sound/gameover.wav");
+        }
 
         timer.stop();
         JOptionPane.showMessageDialog(this,
@@ -358,8 +371,12 @@ public class MovingSphere3D extends JFrame implements KeyListener, MouseListener
         coinLabel.setText("Coins: " + coinCount);
 
         if (score > highScore) {
-            highScore = score;
+            scoreLabel.setForeground(Color.GREEN);
+        } else {
+            scoreLabel.setForeground(Color.WHITE);
         }
+
+        coinLabel.setForeground(Color.WHITE);
     }
 
     @Override
